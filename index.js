@@ -22,7 +22,7 @@ async.series([
   function setupCecClient(callback) {
     cecClient = spawn(config.cecClientCommand, config.cecClientArgs); 
     cecClient.stdout.on('data', function(data) {
-        console.log(data);
+      console.log('cecClient> ' + data.toString());
     });
   },
 
