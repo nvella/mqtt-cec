@@ -3,6 +3,7 @@
   "cecClientArgs": ["-d", "1"],
   "mqttUrl": "mqtt://MQTT-HOST-HERE",
   "powerCheckIntMs": 1000,
+  "powerCmdWaitMs": 5000,
 
   "idMap": {
     "0": { 

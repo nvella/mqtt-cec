@@ -8,6 +8,7 @@ var cecClient = null;
 var mqttClient = null;
 var cmdQueue = {power: []};
 var lastState = {power: {}};
+var lastPowerCmdTime = {};
 
 function reqPowerStatus(id, callback) {
   cmdQueue.power.push(id);
@@ -65,7 +66,7 @@ async.series([
               break;
           }
 
-          if(lastState.power[id] !== state) {
+          if(lastState.power[id] !== state && new Date() - (lastPowerCmdTime[id] || 0) > config.powerCmdWaitMs) {
             console.log('publishing new state for ' + config.idMap[id].rootTopic + '/power : ' + state);
             mqttClient.publish(config.idMap[id].rootTopic + '/power', state, {retain: true});
           }
@@ -87,6 +88,7 @@ async.series([
         case 'power':
           if((message.toString() === 'ON' || message.toString() === 'OFF') && lastState.power[id] !== message.toString()) {
             console.log('turning ' + id + ' ' + message.toString());
+            lastPowerCmdTime[id] = new Date();
             switch(message.toString()) {
               case 'OFF':
                 cecClient.stdin.write('standby ' + id + '\n');
