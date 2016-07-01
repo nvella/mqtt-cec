@@ -54,7 +54,7 @@ async.series([
           var id = cmdQueue.power.shift(); // Get the first element from the array
           var reportedState = line.split(': ')[1];
           var state = 'OFF';
-          switch(state) {
+          switch(reportedState) {
             case 'unknown':
             case 'standby':
               state = 'OFF';
