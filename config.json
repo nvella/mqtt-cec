@@ -8,7 +8,7 @@
     "0": { 
       "rootTopic": "ha/living_room/tv"
     }
-  }
+  },
 
   "subTopics": ["power"]
 }
