@@ -1,4 +1,4 @@
 {
   "cecClientCommand": "cec-client",
-  "cecCommandArgs": []
+  "cecClientArgs": []
 }
