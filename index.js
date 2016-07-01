@@ -46,7 +46,7 @@ async.series([
   function setupCecClient(callback) {
     cecClient = spawn(config.cecClientCommand, config.cecClientArgs); 
     cecClient.stdout.on('data', function(data) {
-      for(var line of data.toString.split('\n')) {
+      for(var line of data.toString().split('\n')) {
         console.log('cecClient> ' + line);
 
         // Power status update
