@@ -30,7 +30,8 @@ async.series([
   function connectMqtt(callback) {
     // Connect MQTT client
     mqttClient = mqtt.connect(config.mqttUrl);
-    
+    console.log('Attempting to connect to MQTT server');
+
     mqttClient.on('connect', function() {
       for(var obj of config.idMap) {
         for(var subTopic of config.subTopics) {
