@@ -5,6 +5,7 @@ var fs     = require('fs');
 
 var config = {};
 var cecClient = null;
+var mqttClient = null;
 var cmdQueue = {power: []};
 var lastState = {power: {}};
 
@@ -28,13 +29,13 @@ async.series([
 
   function connectMqtt(callback) {
     // Connect MQTT client
-    mqtt.connect(confg.mqttUrl);
+    mqttClient = mqtt.connect(config.mqttUrl);
     
-    client.on('connect', function() {
+    mqttClient.on('connect', function() {
       for(var obj of config.map) {
         for(var subTopic of config.subTopics) {
           console.log('Subscribing to ' + obj.rootTopic + '/' + obj.subTopic);
-          client.subscribe(obj.rootTopic + '/' + obj.subTopic);
+          mqttClient.subscribe(obj.rootTopic + '/' + obj.subTopic);
         }
       }
       callback();
@@ -65,7 +66,7 @@ async.series([
 
           if(lastState.power[id] !== state) {
             console.log('publishing new state for ' + config.map[id].rootTopic + '/power : ' + state);
-            client.publish(config.map[id].rootTopic + '/power', state);
+            mqttClient.publish(config.map[id].rootTopic + '/power', state);
           }
           lastState.power[id] = state;
         }
@@ -74,7 +75,7 @@ async.series([
   },
 
   function setupMqttListeners(callback) {
-    client.on('message', function(topic, message) {
+    mqttClient.on('message', function(topic, message) {
       console.log('mqtt> ' + topic + ' : ' + message);
       var id = 0;
       for(id in config.map) { if(topic.indexOf(config.map[id].rootTopic) === 0) break; }
