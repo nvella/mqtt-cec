@@ -1,3 +1,4 @@
+require('es6-shim');
 var mqtt   = require('mqtt');
 var spawn  = require('child_process').spawn;
 var async  = require('async');
