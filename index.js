@@ -73,6 +73,7 @@ async.series([
         }
       }
     });
+    callback();
   },
 
   function setupMqttListeners(callback) {
@@ -91,6 +92,8 @@ async.series([
           break;
       }
     });
+
+    callback();
   },
 
   function setupPeriodicPowerCheck(callback) {
