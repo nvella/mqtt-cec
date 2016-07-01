@@ -1,4 +1,5 @@
 {
   "cecClientCommand": "cec-client",
-  "cecClientArgs": []
+  "cecClientArgs": ["-d", "1"],
+  "mqttUrl": "mqtt://MQTT-HOST-HERE/"
 }
