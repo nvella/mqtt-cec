@@ -67,7 +67,7 @@ async.series([
 
           if(lastState.power[id] !== state) {
             console.log('publishing new state for ' + config.idMap[id].rootTopic + '/power : ' + state);
-            mqttClient.publish(config.idMap[id].rootTopic + '/power', state);
+            mqttClient.publish(config.idMap[id].rootTopic + '/power', state, {retain: true});
           }
           lastState.power[id] = state;
         }
@@ -85,7 +85,7 @@ async.series([
       
       switch(subTopic) {
         case 'power':
-          if((message.toString() === 'ON' || message === 'OFF') && lastState.power[id] !== message.toString()) {
+          if((message.toString() === 'ON' || message.toString() === 'OFF') && lastState.power[id] !== message.toString()) {
             console.log('turning ' + id + ' ' + message.toString());
             cecClient.stdin.write(message.toString().toLowerCase() + ' ' + id + '\n');
           }
