@@ -32,7 +32,7 @@ async.series([
     mqttClient = mqtt.connect(config.mqttUrl);
     
     mqttClient.on('connect', function() {
-      for(var obj of config.map) {
+      for(var obj of config.idMap) {
         for(var subTopic of config.subTopics) {
           console.log('Subscribing to ' + obj.rootTopic + '/' + obj.subTopic);
           mqttClient.subscribe(obj.rootTopic + '/' + obj.subTopic);
@@ -65,8 +65,8 @@ async.series([
           }
 
           if(lastState.power[id] !== state) {
-            console.log('publishing new state for ' + config.map[id].rootTopic + '/power : ' + state);
-            mqttClient.publish(config.map[id].rootTopic + '/power', state);
+            console.log('publishing new state for ' + config.idMap[id].rootTopic + '/power : ' + state);
+            mqttClient.publish(config.idMap[id].rootTopic + '/power', state);
           }
           lastState.power[id] = state;
         }
@@ -78,7 +78,7 @@ async.series([
     mqttClient.on('message', function(topic, message) {
       console.log('mqtt> ' + topic + ' : ' + message);
       var id = 0;
-      for(id in config.map) { if(topic.indexOf(config.map[id].rootTopic) === 0) break; }
+      for(id in config.idMap) { if(topic.indexOf(config.idMap[id].rootTopic) === 0) break; }
       var subTopic = topic.split('/')[topic.split('/').length - 1];
       
       switch(subTopic) {
@@ -95,7 +95,7 @@ async.series([
   function setupPeriodicPowerCheck(callback) {
     if(config.subTopics.indexOf('power') !== -1) {
       setInterval(function() {
-        async.forEachOf(config.map, function(_, id, callback) { reqPowerStatus(id, callback); });
+        async.forEachOf(config.idMap, function(_, id, callback) { reqPowerStatus(id, callback); });
       }, config.powerCheckIntMs);
     }
   }
