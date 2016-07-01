@@ -11,7 +11,7 @@ var lastState = {power: {}};
 
 function reqPowerStatus(id, callback) {
   cmdQueue.power.push(id);
-  cecClient.stdin.write('pow ' + id, callback);
+  cecClient.stdin.write('pow ' + id + '\n', callback);
 }
 
 async.series([
