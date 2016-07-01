@@ -1,4 +1,3 @@
-require('es6-shim');
 var mqtt   = require('mqtt');
 var spawn  = require('child_process').spawn;
 var async  = require('async');
@@ -34,10 +33,10 @@ async.series([
     console.log('Attempting to connect to MQTT server');
 
     mqttClient.on('connect', function() {
-      for(var obj of config.idMap) {
+      for(var id in config.idMap) {
         for(var subTopic of config.subTopics) {
-          console.log('Subscribing to ' + obj.rootTopic + '/' + obj.subTopic);
-          mqttClient.subscribe(obj.rootTopic + '/' + obj.subTopic);
+          console.log('Subscribing to ' + config.idMap[id] + '/' + subTopic);
+          mqttClient.subscribe(config.idMap[id] + '/' + subTopic);
         }
       }
       callback();
