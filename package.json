@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "async": "^1.5.2",
+    "es6-shim": "^0.35.1",
     "mqtt": "^1.12.0"
   }
 }
