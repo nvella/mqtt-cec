@@ -48,7 +48,7 @@ async.series([
     cecClient = spawn(config.cecClientCommand, config.cecClientArgs); 
     cecClient.stdout.on('data', function(data) {
       for(var line of data.toString().split('\n')) {
-        console.log('cecClient> ' + line);
+        if(line.length > 3 && line.indexOf('power status: ') === -1) console.log('cecClient> ' + line);
 
         // Power status update
         if(config.subTopics.indexOf('power') !== -1 && line.indexOf('power status: ') === 0) {
