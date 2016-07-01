@@ -87,7 +87,14 @@ async.series([
         case 'power':
           if((message.toString() === 'ON' || message.toString() === 'OFF') && lastState.power[id] !== message.toString()) {
             console.log('turning ' + id + ' ' + message.toString());
-            cecClient.stdin.write(message.toString().toLowerCase() + ' ' + id + '\n');
+            switch(message.toString()) {
+              case 'OFF':
+                cecClient.stdin.write('standby ' + id + '\n');
+                break;
+              case 'ON':
+                cecClient.stdin.write('on ' + id + '\n');
+                break;
+            }
           }
           break;
       }
