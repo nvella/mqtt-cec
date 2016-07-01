@@ -35,8 +35,8 @@ async.series([
     mqttClient.on('connect', function() {
       for(var id in config.idMap) {
         for(var subTopic of config.subTopics) {
-          console.log('Subscribing to ' + config.idMap[id] + '/' + subTopic);
-          mqttClient.subscribe(config.idMap[id] + '/' + subTopic);
+          console.log('Subscribing to ' + config.idMap[id].rootTopic + '/' + subTopic);
+          mqttClient.subscribe(config.idMap[id].rootTopic + '/' + subTopic);
         }
       }
       callback();
