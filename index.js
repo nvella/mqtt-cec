@@ -78,16 +78,16 @@ async.series([
 
   function setupMqttListeners(callback) {
     mqttClient.on('message', function(topic, message) {
-      console.log('mqtt> ' + topic + ' : ' + message);
+      console.log('mqtt> ' + topic + ' : ' + message.toString());
       var id = 0;
       for(id in config.idMap) { if(topic.indexOf(config.idMap[id].rootTopic) === 0) break; }
       var subTopic = topic.split('/')[topic.split('/').length - 1];
       
       switch(subTopic) {
         case 'power':
-          if(message === 'ON' || message === 'OFF') {
-            console.log('turning ' + id + ' ' + message);
-            cecClient.stdin.write(message.toLowerCase() + ' ' + id + '\n');
+          if((message.toString() === 'ON' || message === 'OFF') && lastState.power[id] !== message.toString()) {
+            console.log('turning ' + id + ' ' + message.toString());
+            cecClient.stdin.write(message.toString().toLowerCase() + ' ' + id + '\n');
           }
           break;
       }
