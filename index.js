@@ -9,6 +9,7 @@ var mqttClient = null;
 var cmdQueue = {power: []};
 var lastState = {power: {}};
 var lastPowerCmdTime = {};
+var startTime = new Date();
 
 function reqPowerStatus(id, callback) {
   cmdQueue.power.push(id);
@@ -80,6 +81,10 @@ async.series([
   function setupMqttListeners(callback) {
     mqttClient.on('message', function(topic, message) {
       console.log('mqtt> ' + topic + ' : ' + message.toString());
+      if((new Date()) - startTime < 5000) {
+        console.log('  Assuming MQTT update is from initial subscription, ignoring');
+        return;
+      }
       var id = 0;
       for(id in config.idMap) { if(topic.indexOf(config.idMap[id].rootTopic) === 0) break; }
       var subTopic = topic.split('/')[topic.split('/').length - 1];
